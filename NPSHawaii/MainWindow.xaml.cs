@@ -96,6 +96,7 @@ namespace NPSHawaii
             if(game.LongDesc != null)
             {
                 String _description = game.LongDesc.Replace("<br>", Environment.NewLine);
+                _description = _description.Replace("<BR>", Environment.NewLine);
                 _description = Environment.NewLine + _description;
                 PanelDescription.Text = $"{_description}";
             }
@@ -216,7 +217,8 @@ namespace NPSHawaii
             TitleID = TitleID.ToLower();
             Query = Query.ToLower();
 
-            double LowestSimilarity = 60;
+            //similarity threshold
+            double LowestSimilarity = 70;
 
             //Search for TitleID
             if(Query.Contains(TitleID))
