@@ -53,7 +53,7 @@ namespace NPSHawaii
             Console.WriteLine($"Starting GET Request with {contentid} in {region}");
 
             GETResponse RESTResponse = new GETResponse();
-            Uri uri = new Uri($"{ChihiroBaseUrl}/{RegionCodes[region]}/19/{contentid}");
+            Uri uri = new Uri($"{ChihiroBaseUrl}/{RegionCodes[region]}/25/{contentid}");
             Console.WriteLine(uri);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);

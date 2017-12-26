@@ -201,11 +201,58 @@ namespace NPSHawaii
             //Use parsed database to query new items
             foreach (GameItem item in DatabaseParser.ParsedDB)
             {
-                if (item.TitleName.ToLower().Contains(Searchbar.Text.ToLower()) || item.TitleID.ToLower().Contains(Searchbar.Text.ToLower()))
+                if(SearchQuery(item.TitleName, item.TitleID, Searchbar.Text))
                 {
                     Dispatcher.Invoke(new Action(() => GameLibrary.Insert(0, item)));
                 }
             }
+        }
+
+        private bool SearchQuery(string ItemTitle, string TitleID, string Query)
+        {
+            bool pass = false;
+
+            ItemTitle = ItemTitle.ToLower();
+            TitleID = TitleID.ToLower();
+            Query = Query.ToLower();
+
+            double LowestSimilarity = 60;
+
+            //Search for TitleID
+            if(Query.Contains(TitleID))
+            {
+                pass = true;
+            }
+
+            //Exact match
+            if (ItemTitle.Contains(Query))
+            {
+                pass = true;
+            }
+
+            //String search algorithm based on similarity %
+            string[] TitleWords = ItemTitle.Split(' ');
+            if(TitleWords.Length > 2)
+            {
+                double progress = 0;
+
+                foreach (string word in TitleWords)
+                {
+                    if (Query.Contains(word))
+                    {
+                        progress++;
+                    }
+                }
+
+                double similarity = (progress * 100) / TitleWords.Length;
+
+                if (similarity > LowestSimilarity)
+                {
+                    pass = true;
+                }
+            }
+
+            return pass;
         }
 
         private void Database_AllParsed(object sender, RunWorkerCompletedEventArgs e)
